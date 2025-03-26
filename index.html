@@ -1,47 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
-
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
-
-<h2>This is heading 2</h2>
-<p>This is some other text.</p>
-
-
-
-
-<h2>An ordered HTML list</h2>
-
-<ol>
-  <li>Pencil</li>
-  <li>Notebook</li>
-  <li>Sheets</li>
-</ol>  
-
-
-
-
-<h2>An unordered HTML list</h2>
-
-<ul>
-  <li>Pencil</li>
-  <li>Notebook</li>
-  <li>Sheets</li>
-</ul>  
-
-<h1>HTML Links</h1>
-
-<p><a href="https://www.w3schools.com/">Visit W3Schools.com!</a></p>
-
-<h2>HTML Image</h2>
-<img src="css.png" alt="Trulli" width="500" height="333">
-
-
-<p>02-25-2025/SyedaGilani</p>
-
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap</title>
+  </head>
+  <body>
+    <h1>Ordering Form</h1>
+    <h2>Welcome to the store!</h2>
+    <script src="store_script.js"></script>
+    <form>
+        <label for="cname">Name:</label><br>
+        <input type="text" id="cname" name="cname"><br>
+        <label for="item">Item Requested:</label><br>
+        <input type="text" id="item" name="item"><br>
+        <label for="amt">Number of Items:</label><br>
+        <input type="text" id="amt" name="amt">
+      </form>
+    <h2 id="Greeting"></h2>
+    <h2 id="Arrival"></h2>
+    <button onclick="process()">Submit</button>
+  </body>
 </html>
