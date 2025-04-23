@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coin Data Search</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Finance Portal</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/coins.html">Coins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/news.html">News</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/data.html">Data Search</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Search for Coin Data</h2>
+  <form id="searchForm" class="d-flex justify-content-center mb-4">
+    <input type="text" class="form-control w-50 me-2" id="coinInput" placeholder="Enter coin symbol (e.g. BTC)" required>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+  <div id="coinData" class="text-center"></div>
+</div>
+
+<script>
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const symbol = document.getElementById("coinInput").value.trim().toUpperCase();
+    if (!symbol) return;
+
+    const url = new URL("https://min-api.cryptocompare.com/data/pricemultifull");
+    url.search = new URLSearchParams({
+      fsyms: symbol,
+      tsyms: "USD,EUR",
+      api_key: "f8eba390d5bda519b5ff6ecf96ba982f1bed13c12d4d6a2ba52724212cd6d646"
+    }).toString();
+
+    fetch(url, {
+      method: "GET",
+      headers: { "Content-type": "application/json; charset=UTF-8" }
+    })
+      .then(res => res.json())
+      .then(data => {
+        const coinData = data.DISPLAY?.[symbol]?.USD;
+        const container = document.getElementById("coinData");
+        if (!coinData) {
+          container.innerHTML = `<div class="alert alert-danger">No data found for symbol: ${symbol}</div>`;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="card mx-auto" style="max-width: 500px;">
+            <div class="card-body">
+              <h5 class="card-title">${symbol} - ${coinData.PRICE}</h5>
+              <p class="card-text">Market Cap: ${coinData.MKTCAP}</p>
+              <p class="card-text">24h Change: ${coinData.CHANGEPCT24HOUR}%</p>
+              <p class="card-text">Volume (24h): ${coinData.VOLUME24HOURTO}</p>
+              <p class="card-text">Last Updated: ${coinData.LASTUPDATE}</p>
+            </div>
+          </div>
+        `;
+      })
+      .catch(err => console.error(err));
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,75 +1,130 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Data</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body class="w-100 h-100">
+  
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Finance Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/coins.html">Coins</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/data.html">Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/news.html">News</a>
+          </li>
 
-    <title>Hello, world!</title>
-  </head>
-  <body>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <button type="button" class="btn btn-primary btn-lg" id="getButton">Get Data</button> 
-    
-    <table class="table table-striped" >
-        <thead>
-          <tr>
-            <th scope="col">factid</th>
-            <th scope="col">Fact</th>
-          </tr>
-        </thead>
-        <tbody id="table">
-        </tbody>
-      </table>
+  
+  <section class="bg-light text-center py-5">
+    <div class="container">
+      <h1 class="display-4">Welcome to the Financial Data Portal</h1>
+      <p class="lead">Explore real-time insights, data visualizations, and reports to help you stay ahead.</p>
+      <a href="#" class="btn btn-primary btn-lg">Get Started</a>
+    </div>
+  </section>
 
-      <img src="https://randomwordgenerator.com/img/picture-generator/54e9d1454b5ba914f1dc8460962e33791c3ad6e04e507440752b7edc9649c2_640.jpg" class="img-fluid" alt="..." id="img">
+  
+  <section class="py-5">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Live Market Data</h5>
+              <p class="card-text">Access up-to-date stock and currency data.</p>
+              <a href="/coins.html" class="btn btn-outline-primary">View More</a>
+            </div>
+          </div>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function(e){
-
-            const getButton=document.getElementById("getButton");
-            let resObj = null;
-            getButton.addEventListener("click", getData);
+        
+      </div>
+    </div>
+  </section>
 
 
-            async function getData() {
-                let req = await fetch("https://brianobruno.github.io/cats.json");
+<section class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Top Cryptocurrencies by Volume</h2>
+      <div id="crypto-container" class="row justify-content-center">
+      </div>
+    </div>
+  </section>
+  
 
-                let response = await req.json();
+  <section>
 
-                if (response){
-                  resObj = response;
-                  console.log(resObj);
-                  document.getElementById('img').src = resObj.catPhoto;
-                  let facts = []
-                  Object.entries(resObj['facts']).forEach(([id, obj]) => {
-                    facts.push([obj.factId, obj.text])
-                  })
-                  facts = facts.sort();
-                  let tableBody = document.getElementById("table");
+  </section>
 
-                  facts.forEach((fact) => {
-                    let row = tableBody.insertRow();
-                    let idCell = row.insertCell(0);
-                    idCell.innerHTML = fact[0];
-                    let textCell = row.insertCell(1);
-                    textCell.innerHTML = fact[1];
-                  })
-                  
-                }
-                else{
-                  console.error("Error getting response from request");
-                }
-            }
+  
+  <footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+      <p class="mb-0">© 2025 Financial Data Project. All rights reserved.</p>
+    </div>
+  </footer>
 
-        }
+  <script>
+    const container = document.getElementById("crypto-container");
+  
+    async function loadCryptoData() {
+      try {
+        const response = await fetch("https://min-api.cryptocompare.com/data/top/totalvolfull?limit=3&tsym=USD");
+        const data = await response.json();
+        const coins = data.Data;
+  
+        coins.forEach(coin => {
+          const info = coin.CoinInfo;
+          const display = coin.DISPLAY.USD;
+  
+          const card = document.createElement("div");
+          card.className = "col-md-4 mb-4";
+          card.innerHTML = `
+            <div class="card shadow-sm h-100">
+              <img src="https://www.cryptocompare.com${info.ImageUrl}" class="card-img-top" alt="${info.FullName}">
+              <div class="card-body text-center">
+                <h5 class="card-title">${info.FullName} (${info.Name})</h5>
+                <p class="card-text"><strong>Price:</strong> ${display.PRICE}</p>
+                <p class="card-text"><strong>Market Cap:</strong> ${display.MKTCAP}</p>
+                <p class="card-text"><strong>24h Volume:</strong> ${display.VOLUME24HOURTO}</p>
+                <a href="https://www.cryptocompare.com${info.Url}" class="btn btn-outline-primary" target="_blank">Details</a>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+  
+      } catch (error) {
+        container.innerHTML = `<div class="text-danger text-center">Error loading data: ${error}</div>`;
+      }
+    }
+  
+    loadCryptoData();
+  </script>
+  
 
-        )
-
-    </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 </body>
 </html>
